@@ -6,9 +6,9 @@ import de.informatics4kids.image.PictureViewer;
 public class Main {
 
 	public static void main(String[] args) {
-
+		
 		Picture pic = new Picture(
-				"/home/student/devel/projects/ImageManipulation/rsc/testbild.jpg");
+				"./rsc/testbild.jpg");
 		PictureViewer viewer;
 		Picture testPic = new Picture(pic.widthX(), pic.heightY());
 
@@ -32,7 +32,7 @@ public class Main {
 		viewer = new PictureViewer(testPic.getPicture());
 		viewer.show();
 		
-		testPic = ImageTransformations.rotatePic(pic, 90);
+		testPic = ImageTransformations.rotatePic(pic, 180);
 		viewer = new PictureViewer(testPic.getPicture());
 		viewer.show();
 		

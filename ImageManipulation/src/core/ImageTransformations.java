@@ -1,87 +1,95 @@
 package core;
 
-import java.awt.Color;
 import java.awt.Point;
-import java.util.LinkedList;
+import java.awt.Polygon;
+import java.awt.Rectangle;
 
 import de.informatics4kids.image.Picture;
 
 public class ImageTransformations {
 
-	private static Point rotation(Point point, double angle){
+	private static Point rotation(int x, int y, double angle) {
 
-	      Point result = new Point();
+		Point result = new Point();
 
-	      double c = Math.cos(angle);
-	      double s = Math.sin(angle);
+		double c = Math.cos(angle);
+		double s = Math.sin(angle);
 
-	      result.x = (int) (c*point.x - s*point.y);
-	      result.y = (int) (s*point.x + c*point.y);
+		result.x = (int) (c * x - s * y);
+		result.y = (int) (s * x + c * y);
 
-	      return result;
+		return result;
 	}
-	
+
+	public static RotateRecInfo calculate(int width, int height, double angle) {
+
+		Point ul = rotation(0,0, angle);
+		Point ur = rotation(width, 0, angle);
+		Point ll = rotation(0, height, angle);
+		Point lr = rotation(width, height, angle);
+
+		int[] x = new int[] { ul.x, ur.x, ll.x, lr.x };
+		int[] y = new int[] { ul.y, ur.y, ll.y, lr.y };
+
+		Polygon pol = new Polygon(x, y, 4);
+		Rectangle rec = pol.getBounds();
+
+		return new RotateRecInfo(rec.width, rec.height, -rec.x, -rec.y);
+
+	}
+
 	public static Picture rotatePic(Picture pic, double angle) {
-		
-		Picture rotatedPicture = new Picture(pic.widthX(), pic.widthX());		
-		Point p = new Point();
-		LinkedList<Color> colors = new LinkedList<Color>();
-		LinkedList<Point> points = new LinkedList<Point>();
-		int offsetx = 0;
-		int offsety = 0;
-		
+
+		RotateRecInfo rotInf = calculate(pic.widthX(), pic.heightY(), angle);
+
+		Picture rotatedPicture = new Picture(rotInf.getWidth(),
+				rotInf.getHeight());
+
 		for (int i = 0; i < pic.widthX(); i++) {
 			for (int j = 0; j < pic.heightY(); j++) {
-				colors.add(pic.getColor(i, j));
-				
-				p.x = i;
-				p.y = j;
-				
-				p = rotation(p, 90);
-				
-				// --------------
-				if (p.x < 0 || p.y < 0) {
-					//System.err.println("Error at:" + p.x + " || " + p.y);
-					if (p.x < offsetx) {
-						offsetx = p.x * -1;
-					}
-					if (p.y < offsety) {
-						offsety = p.y * -1;
-					}
-				}
-				
-				points.add(p);
-				
-				//System.out.println("X: " + p.x + " Y: " + p.y);
+
+				Point p = rotation(i, j, angle);
+				p.x += rotInf.xOff;
+				p.y += rotInf.yOff;
+				rotatedPicture.setColor(p.x - 1, p.y-1, pic.getColor(i, j));
 			}
 		}
-		
-		System.out.println(points.size());
-		
-		for (int i = 0; i < points.size(); i++) {
-			
-			Color col = colors.get(i);
-			Point pt = points.get(i);
-			
-			if (col == null) {
-				col = Color.BLUE;
-			}
-			
-			if (pt.x < 0 || pt.y < 0) {
-				System.err.println(" 1 Error at:" + p.x + " || " + p.y);
-			}
-			
-			pt.x += offsetx;
-			pt.y -= offsety;
-			
-			if (pt.x < 0 || pt.y < 0) {
-				System.err.println(" 2 Error at:" + p.x + " || " + p.y);
-			}
-			
-			rotatedPicture.setColor(pt.x, pt.y, col);
-		}
-		
+
 		return rotatedPicture;
 	}
-	
+
+	private static class RotateRecInfo {
+		@Override
+		public String toString() {
+			return "RotateRecInfo [width=" + width + ", height=" + height
+					+ ", xOff=" + xOff + ", yOff=" + yOff + "]";
+		}
+
+		public RotateRecInfo(int width, int height, int xOff, int yOff) {
+			this.width = width;
+			this.height = height;
+			this.xOff = xOff;
+			this.yOff = yOff;
+		}
+
+		public int getWidth() {
+			return width;
+		}
+
+		public int getHeight() {
+			return height;
+		}
+
+		public int getxOff() {
+			return xOff;
+		}
+
+		public int getyOff() {
+			return yOff;
+		}
+
+		private final int width, height, xOff, yOff;
+
+	}
+
 }
