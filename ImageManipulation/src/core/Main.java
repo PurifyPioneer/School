@@ -12,27 +12,27 @@ public class Main {
 		PictureViewer viewer;
 		Picture testPic = new Picture(pic.widthX(), pic.heightY());
 
-		testPic = ImageUtilities.makeGreen(pic);
-		viewer = new PictureViewer(testPic.getPicture());
-		viewer.show();
-
-		testPic = ImageUtilities.makeBlue(pic);
-		viewer = new PictureViewer(testPic.getPicture());
-		viewer.show();
-
-		testPic = ImageUtilities.makeRed(pic);
-		viewer = new PictureViewer(testPic.getPicture());
-		viewer.show();
+//		testPic = ImageUtilities.makeGreen(pic);
+//		viewer = new PictureViewer(testPic.getPicture());
+//		viewer.show();
+//
+//		testPic = ImageUtilities.makeBlue(pic);
+//		viewer = new PictureViewer(testPic.getPicture());
+//		viewer.show();
+//
+//		testPic = ImageUtilities.makeRed(pic);
+//		viewer = new PictureViewer(testPic.getPicture());
+//		viewer.show();
+//		
+//		testPic = ImageUtilities.makeGrey(pic);
+//		viewer = new PictureViewer(testPic.getPicture());
+//		viewer.show();
+//
+//		testPic = ImageUtilities.makeBin(pic, 90);
+//		viewer = new PictureViewer(testPic.getPicture());
+//		viewer.show();
 		
-		testPic = ImageUtilities.makeGrey(pic);
-		viewer = new PictureViewer(testPic.getPicture());
-		viewer.show();
-
-		testPic = ImageUtilities.makeBin(pic, 90);
-		viewer = new PictureViewer(testPic.getPicture());
-		viewer.show();
-		
-		testPic = ImageTransformations.rotatePic(pic, 180);
+		testPic = ImageTransformations.rotatePic(pic, 90);
 		viewer = new PictureViewer(testPic.getPicture());
 		viewer.show();
 		
