@@ -5,39 +5,58 @@ import java.awt.Point;
 import de.informatics4kids.image.Picture;
 
 public class ImageTransformations {
-	
-	private static Point rotation(int x, int y, double angle) {
-		
-		Point result = new Point();
-		
-		double angleRad = Math.toRadians(angle);
-		
-		double c = Math.cos(angleRad);
-		System.out.println("Cos:" + c);
-		double s = Math.sin(angleRad);
-		System.out.println("Sin: " + s);
 
+	/**
+	 * Method to calculated the new coordinates of an point,
+	 * which should be rotated.
+	 * 
+	 * @param x The x-coordinate of the point which should be rotated
+	 * @param y The y-coordinate of the point which should be rotated
+	 * @param angle The angle by which the point should be rotated
+	 * @return The new coordinates of the rotated point
+	 */
+	private static Point rotation(int x, int y, double angle) {
+
+		//Punkt
+		Point result = new Point();
+
+		//Winkel in Rad umrechnen
+		double angleRad = Math.toRadians(angle);
+
+		// Sinus und Kosinus bestimmen
+		double c = Math.cos(angleRad);
+		double s = Math.sin(angleRad);
+
+		//Dem Punkt die neuen Werte für die Koordinaten geben
 		result.x = (int) (c * x - s * y);
 		result.y = (int) (s * x + c * y);
 
 		return result;
 	}
 
+	/**
+	 * This Method rotates the picture by calculating
+	 * new coordinates for the points from a given picture
+	 * using a given angle.
+	 * 
+	 * @param pic Picture which should be rotated
+	 * @param angle The angle by which the picture should be rotated
+	 * @return The rotated picture
+	 */
 	public static Picture rotatePic(Picture pic, double angle) {
 
+		//Extrem Punkte des Bildes bestimmen(Punkte an denen das Bild die maximale Ausdehnung hat)
 		Point points[] = new Point[4];
 		points[0] = rotation(0, 0, angle);
 		points[1] = rotation(0, pic.heightY(), angle);
 		points[2] = rotation(pic.widthX(), 0, angle);
 		points[3] = rotation(pic.widthX(), pic.heightY(), angle);
-		
-		for (int i = 0; i < points.length; i++) {
-			System.out.println(points[i]);
-		}
-		
+
+		//Offsets
 		int offsetX = 0;
 		int offsetY = 0;
-		
+
+		//Die Offsets berechen (x+y)
 		for (int i = 0; i < points.length; i++) {
 			if (points[i].x < offsetX) {
 				offsetX = points[i].x;
@@ -46,24 +65,24 @@ public class ImageTransformations {
 				offsetY = points[i].y;
 			}
 		}
-		
+
+		//Offsets positiv machen
 		offsetX *= -1;
 		offsetY *= -1;
-		
+
+		//Extrempunkte um Offset verschieben
 		for (int i = 0; i < points.length; i++) {
 			points[i].x += offsetX;
 			points[i].y += offsetY;
-			System.out.println(points[i]);
 		}
-		
-		System.out.println("Offsetx: " + offsetX);
-		System.out.println("Offsety: " + offsetY);
-		
+
+		//Variablen für minimale Ausdehnung in x und y Richtung
 		int minx = 0;
 		int miny = 0;
 		int maxx = 0;
 		int maxy = 0;
 
+		//Werte für eben deklarierte Variablen berechnen 
 		for (int i = 0; i < points.length; i++) {
 			if (points[i].x < minx) {
 				minx = points[i].x;
@@ -78,43 +97,31 @@ public class ImageTransformations {
 				maxy = points[i].y;
 			}
 		}
-		
-		System.out.println("Minx: " + minx);
-		System.out.println("Miny: " + miny);
-		System.out.println("Maxx: " + maxx);
-		System.out.println("Maxy: " + maxy);
-		
+
+		//Breite und Höhe bestimmen
 		int width = maxx - minx + 1;
 		int height = maxy - miny + 1;
-	
-//		System.out.println("Width: " + width);
-//		System.out.println("Height: " + height);
-		
+
+		//Das rotierete Bild erzeugen/Einen Punkt erzeugen(außerhalb der for-Schleife um speicher verbrauch zu minimieren)
 		Picture rotatedPicture = new Picture(width, height);
 		Point p = new Point();
-		
-		System.out.println(rotatedPicture.widthX());
-		System.out.println(rotatedPicture.heightY());
-		
-		//TODO
+
+		//Über Bildpunkte des zugrundeliegenden Bildes laufen und neue Werte bestimmen
 		for (int x = 0; x < pic.widthX() - 1; x++) {
 			for (int y = 0; y < pic.heightY() - 1; y++) {
+
+				//Errechnung des neuen Wertes
+				p = rotation(x, y, angle);
 				
-			p = rotation(x, y, angle);	
-			p.x += offsetX;
-			p.y += offsetY;
-			
-			if (p.x < 0 ) {
-				System.err.println("Error(x): " + p.x);
-				System.err.println("Error(y): " + p.y);
-			}
-			
-			System.out.println("X: " + p.x + " Y: " + p.y);
-			
-			rotatedPicture.setColor(p.x, p.y, pic.getColor(x, y));	
+				//Verschiebung durch Offsets
+				p.x += offsetX;
+				p.y += offsetY;
+
+				//Farbwerte auf dem rotierten Bild setzten
+				rotatedPicture.setColor(p.x, p.y, pic.getColor(x, y));
 			}
 		}
-		
+
 		return rotatedPicture;
 	}
 }
