@@ -32,7 +32,7 @@ public class Main {
 //		viewer = new PictureViewer(testPic.getPicture());
 //		viewer.show();
 		
-		testPic = ImageTransformations.rotatePic(pic, 90);
+		testPic = ImageTransformations.rotatePic(pic, 270);
 		viewer = new PictureViewer(testPic.getPicture());
 		viewer.show();
 		
