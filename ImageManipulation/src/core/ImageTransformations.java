@@ -9,8 +9,13 @@ public class ImageTransformations {
 	private static Point rotation(int x, int y, double angle) {
 		
 		Point result = new Point();
-		double c = Math.cos(angle);
-		double s = Math.sin(angle);
+		
+		double angleRad = Math.toRadians(angle);
+		
+		double c = Math.cos(angleRad);
+		System.out.println("Cos:" + c);
+		double s = Math.sin(angleRad);
+		System.out.println("Sin: " + s);
 
 		result.x = (int) (c * x - s * y);
 		result.y = (int) (s * x + c * y);
@@ -26,14 +31,16 @@ public class ImageTransformations {
 		points[2] = rotation(pic.widthX(), 0, angle);
 		points[3] = rotation(pic.widthX(), pic.heightY(), angle);
 		
+		for (int i = 0; i < points.length; i++) {
+			System.out.println(points[i]);
+		}
+		
 		int offsetX = 0;
 		int offsetY = 0;
 		
 		for (int i = 0; i < points.length; i++) {
 			if (points[i].x < offsetX) {
-				System.out.println("x: " + points[i].x);
 				offsetX = points[i].x;
-				System.out.println("offx: " + offsetX);
 			}
 			if (points[i].y < offsetY) {
 				offsetY = points[i].y;
@@ -46,11 +53,11 @@ public class ImageTransformations {
 		for (int i = 0; i < points.length; i++) {
 			points[i].x += offsetX;
 			points[i].y += offsetY;
-//			System.out.println(points[i]);
+			System.out.println(points[i]);
 		}
 		
-//		System.out.println("Offsetx: " + offsetX);
-//		System.out.println("Offsety: " + offsetY);
+		System.out.println("Offsetx: " + offsetX);
+		System.out.println("Offsety: " + offsetY);
 		
 		int minx = 0;
 		int miny = 0;
@@ -67,24 +74,27 @@ public class ImageTransformations {
 			if (points[i].x > maxx) {
 				maxx = points[i].x;
 			}
-			if (points[i].x > maxy) {
+			if (points[i].y > maxy) {
 				maxy = points[i].y;
 			}
 		}
 		
-//		System.out.println("Minx: " + minx);
-//		System.out.println("Miny: " + miny);
-//		System.out.println("Maxx: " + maxx);
-//		System.out.println("Maxy: " + maxy);
+		System.out.println("Minx: " + minx);
+		System.out.println("Miny: " + miny);
+		System.out.println("Maxx: " + maxx);
+		System.out.println("Maxy: " + maxy);
 		
-		int width = maxx - minx;
-		int height = maxy - miny;
+		int width = maxx - minx + 1;
+		int height = maxy - miny + 1;
 	
 //		System.out.println("Width: " + width);
 //		System.out.println("Height: " + height);
 		
 		Picture rotatedPicture = new Picture(width, height);
 		Point p = new Point();
+		
+		System.out.println(rotatedPicture.widthX());
+		System.out.println(rotatedPicture.heightY());
 		
 		//TODO
 		for (int x = 0; x < pic.widthX() - 1; x++) {
@@ -94,10 +104,14 @@ public class ImageTransformations {
 			p.x += offsetX;
 			p.y += offsetY;
 			
+			if (p.x < 0 ) {
+				System.err.println("Error(x): " + p.x);
+				System.err.println("Error(y): " + p.y);
+			}
+			
 			System.out.println("X: " + p.x + " Y: " + p.y);
 			
-			rotatedPicture.setColor(p.x, p.y, pic.getColor(x, y));
-				
+			rotatedPicture.setColor(p.x, p.y, pic.getColor(x, y));	
 			}
 		}
 		
