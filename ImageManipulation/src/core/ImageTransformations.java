@@ -86,12 +86,13 @@ public class ImageTransformations {
 		Picture rotatedPicture = new Picture(width, height);
 		Point p = new Point();
 		
-		for (int x = 0; x < pic.widthX(); x++) {
-			for (int y = 0; y < pic.heightY(); y++) {
+		//TODO
+		for (int x = 0; x < pic.widthX() - 1; x++) {
+			for (int y = 0; y < pic.heightY() - 1; y++) {
 				
 			p = rotation(x, y, angle);	
-			//p.x += offsetX;
-			//p.y += offsetY;
+			p.x += offsetX;
+			p.y += offsetY;
 			
 			System.out.println("X: " + p.x + " Y: " + p.y);
 			
