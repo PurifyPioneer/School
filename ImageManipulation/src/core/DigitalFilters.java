@@ -12,8 +12,19 @@ public class DigitalFilters {
 
 		p = ImageUtilities.makeGrey(pic);
 
-		int surroundingPixels[] = new int[9];
-		int mask[] = { 1, 2, 1, 2, 3, 2, 1, 2, 1 };
+		int surroundingPixels[][] = new int[3][3];
+		int mask[][] = new int[3][3];
+		
+		mask[0][0] = 1;
+		mask[0][1] = 2;
+		mask[0][2] = 1;
+		mask[1][0] = 2;
+		mask[1][1] = 3;
+		mask[1][2] = 2;
+		mask[2][0] = 1;
+		mask[2][1] = 2;
+		mask[2][2] = 1;
+		
 
 		int xpos = 0;
 		int ypos = 0;
@@ -21,7 +32,15 @@ public class DigitalFilters {
 		for (int x = 0; x < p.widthX(); x++) {
 			for (int y = 0; y < p.heightY(); y++) {
 				
-				
+				/*
+				 *  2 for-Schleifen um über alle Bildpunkte des alten Bildes zu laufen
+				 *  
+				 *  ---> bei jedem Punkt umgebene Punkte herausfinden und von jedem umgebenden 
+				 *       Punkt
+				 * 
+				 * 
+				 * 
+				 */
 				
 //				/////////////////////////////////////////////////
 //				

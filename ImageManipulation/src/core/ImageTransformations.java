@@ -15,19 +15,20 @@ public class ImageTransformations {
 	 * @param angle The angle by which the point should be rotated
 	 * @return The new coordinates of the rotated point
 	 */
-	private static Point rotation(int x, int y, double angle) {
+	
+	//Winkel in Rad umrechnen
+	private static double angleRad;
+	
+	// Sinus und Kosinus bestimmen
+	private static double c;
+	private static double s;
+	
+	private static Point rotation(int x, int y) {
 
 		//Punkt
 		Point result = new Point();
 
-		//Winkel in Rad umrechnen
-		double angleRad = Math.toRadians(angle);
-
-		// Sinus und Kosinus bestimmen
-		double c = Math.cos(angleRad);
-		double s = Math.sin(angleRad);
-
-		//Dem Punkt die neuen Werte für die Koordinaten geben
+		//Dem Punkt die neuen Werte fï¿½r die Koordinaten geben
 		result.x = (int) (c * x - s * y);
 		result.y = (int) (s * x + c * y);
 
@@ -44,13 +45,17 @@ public class ImageTransformations {
 	 * @return The rotated picture
 	 */
 	public static Picture rotatePic(Picture pic, double angle) {
+		
+		angleRad = Math.toRadians(angle);
+		c = Math.cos(angleRad);
+		s = Math.sin(angleRad);
 
 		//Extrem Punkte des Bildes bestimmen(Punkte an denen das Bild die maximale Ausdehnung hat)
 		Point points[] = new Point[4];
-		points[0] = rotation(0, 0, angle);
-		points[1] = rotation(0, pic.heightY(), angle);
-		points[2] = rotation(pic.widthX(), 0, angle);
-		points[3] = rotation(pic.widthX(), pic.heightY(), angle);
+		points[0] = rotation(0, 0);
+		points[1] = rotation(0, pic.heightY());
+		points[2] = rotation(pic.widthX(), 0);
+		points[3] = rotation(pic.widthX(), pic.heightY());
 
 		//Offsets
 		int offsetX = 0;
@@ -76,13 +81,13 @@ public class ImageTransformations {
 			points[i].y += offsetY;
 		}
 
-		//Variablen für minimale Ausdehnung in x und y Richtung
+		//Variablen fï¿½r minimale Ausdehnung in x und y Richtung
 		int minx = 0;
 		int miny = 0;
 		int maxx = 0;
 		int maxy = 0;
 
-		//Werte für eben deklarierte Variablen berechnen 
+		//Werte fï¿½r eben deklarierte Variablen berechnen 
 		for (int i = 0; i < points.length; i++) {
 			if (points[i].x < minx) {
 				minx = points[i].x;
@@ -98,20 +103,20 @@ public class ImageTransformations {
 			}
 		}
 
-		//Breite und Höhe bestimmen
+		//Breite und Hï¿½he bestimmen
 		int width = maxx - minx + 1;
 		int height = maxy - miny + 1;
 
-		//Das rotierete Bild erzeugen/Einen Punkt erzeugen(außerhalb der for-Schleife um speicher verbrauch zu minimieren)
+		//Das rotierete Bild erzeugen/Einen Punkt erzeugen(auï¿½erhalb der for-Schleife um speicher verbrauch zu minimieren)
 		Picture rotatedPicture = new Picture(width, height);
 		Point p = new Point();
 
-		//Über Bildpunkte des zugrundeliegenden Bildes laufen und neue Werte bestimmen
+		//ï¿½ber Bildpunkte des zugrundeliegenden Bildes laufen und neue Werte bestimmen
 		for (int x = 0; x < pic.widthX() - 1; x++) {
 			for (int y = 0; y < pic.heightY() - 1; y++) {
 
 				//Errechnung des neuen Wertes
-				p = rotation(x, y, angle);
+				p = rotation(x, y);
 				
 				//Verschiebung durch Offsets
 				p.x += offsetX;
