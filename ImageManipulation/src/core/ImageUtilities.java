@@ -4,8 +4,22 @@ import java.awt.Color;
 
 import de.informatics4kids.image.Picture;
 
+/**
+ * Class that provides methods to apply color-filters to a {@link=Picture} .
+ * 
+ * @author Pommesfee
+ * @version 1.0
+ * @since 1.0
+ */
 public class ImageUtilities {
 
+	/**
+	 * Method to apply a green filter to a {@link=Picture}
+	 * 
+	 * @param pic
+	 *            The Picture the filter should be applied to
+	 * @return The modified picture
+	 */
 	public static Picture makeGreen(Picture pic) {
 
 		Color green;
@@ -26,6 +40,13 @@ public class ImageUtilities {
 		return greenPic;
 	}
 
+	/**
+	 * Method to apply a blue filter to a {@link=Picture}
+	 * 
+	 * @param pic
+	 *            The Picture the filter should be applied to
+	 * @return The modified picture
+	 */
 	public static Picture makeBlue(Picture pic) {
 
 		Color blue;
@@ -46,6 +67,13 @@ public class ImageUtilities {
 		return bluePic;
 	}
 
+	/**
+	 * Method to apply a red filter to a {@link=Picture}
+	 * 
+	 * @param pic
+	 *            The Picture the filter should be applied to
+	 * @return The modified picture
+	 */
 	public static Picture makeRed(Picture pic) {
 
 		Color red;
@@ -66,6 +94,13 @@ public class ImageUtilities {
 		return bluePic;
 	}
 
+	/**
+	 * Method to apply a grey filter to a {@link=Picture}
+	 * 
+	 * @param pic
+	 *            The Picture the filter should be applied to
+	 * @return The modified picture
+	 */
 	public static Picture makeGrey(Picture pic) {
 
 		Color oldColor;
@@ -88,6 +123,14 @@ public class ImageUtilities {
 
 	}
 
+	/**
+	 * Method to create a binary Picture just with the colors black and white.
+	 * First a grey filter is used, and then the binary value is calculated.
+	 * 
+	 * @param pic
+	 *            The Picture the filter should be applied to
+	 * @return The modified picture
+	 */
 	public static Picture makeBin(Picture pic, int value) {
 
 		Picture greyPic = makeGrey(pic);
@@ -107,13 +150,13 @@ public class ImageUtilities {
 				} else {
 					binarvalue = 255;
 				}
-				
-				binColor =  new Color(binarvalue, binarvalue, binarvalue);
+
+				binColor = new Color(binarvalue, binarvalue, binarvalue);
 				binPic.setColor(i, j, binColor);
 
 			}
 		}
-		
+
 		return binPic;
 	}
 

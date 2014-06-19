@@ -4,6 +4,15 @@ import java.awt.Color;
 
 import de.informatics4kids.image.Picture;
 
+/**
+ * A class that is planned to provide digital filters
+ * 
+ * 
+ * @author Pommesfee
+ * @version 0.1a - Work in progress ..
+ * @since 1.0
+ *
+ */
 public class DigitalFilters {
 
 	public static Picture digFilter(Picture pic) {
@@ -12,6 +21,7 @@ public class DigitalFilters {
 
 		p = ImageUtilities.makeGrey(pic);
 
+		@SuppressWarnings("unused")
 		int surroundingPixels[][] = new int[3][3];
 		int mask[][] = new int[3][3];
 		
@@ -26,7 +36,9 @@ public class DigitalFilters {
 		mask[2][2] = 1;
 		
 
+		@SuppressWarnings("unused")
 		int xpos = 0;
+		@SuppressWarnings("unused")
 		int ypos = 0;
 
 		for (int x = 0; x < p.widthX(); x++) {
